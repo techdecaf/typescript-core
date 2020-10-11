@@ -1,0 +1,44 @@
+# documentation for tasks can be found @ https://github.com/techdecaf/tasks
+options:
+  log: true
+
+variables:
+  CI_PROJECT_NAME: '{{ReadFile `.cgen.yaml` | YQ `answers.Name`}}'
+  CI_COMMIT_TAG: '{{TRY `git describe --tags --always --dirty --abbrev=0`}}'
+  CI_COMMIT_REF_NAME: '{{TRY `git rev-parse --abbrev-ref HEAD`}}'
+  CI_COMMIT_SHA: '{{TRY `git rev-parse HEAD`}}'
+
+tasks:
+  default:
+    description: is the task that runs when no tasks have been specified.
+    commands: [tasks list]
+
+  symlink:
+    description: install current generator
+    commands:
+      - mkdir -p {{.HOME}}/.cgen/generators
+      - ln -s {{PWD}} {{.HOME}}/.cgen/generators/{{.CI_PROJECT_NAME}}
+
+  build:
+    description: build current project
+    pre: [clean]
+    variables:
+      Name: '{{uuidv4}}'
+      AUTHOR: your.email@domain.com
+      DESCRIPTION: end-to-end testing
+    commands: ['cgen -p temp -t {{.CI_PROJECT_NAME}}']
+
+  clean:
+    description: remove files created as part of the build step.
+    commands: ['rm -rf ./temp']
+
+  test:
+    description: run tests
+    dir: temp
+    pre: [build]
+    commands:
+      - tasks run dependencies coverage audit
+
+  release:
+    description: bump version and release
+    commands: ['cgen bump -l patch --push']

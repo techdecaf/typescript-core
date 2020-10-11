@@ -1,0 +1,22 @@
+# version: the version of this generator plugin
+cgen_version: '>=0.6.0'
+template_version: 0.0.10
+
+# questions: are variables that can be used in project generation.
+questions:
+  # the user will be prompted to enter a string
+  - name: AUTHOR
+    type: string
+    prompt: who does this project belong to
+    default: your.email@domain.com
+  - name: DESCRIPTION
+    type: string
+    prompt: how would you describe this project
+  - name: GIT_BASE_URL
+    type: constant
+    default: https://github.com/techdecaf
+
+# executed by cgen after resolving variables, but before generating files
+run_before: []
+#  executed by cgen after generating the project
+run_after: []

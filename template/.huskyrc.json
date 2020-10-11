@@ -1,0 +1,6 @@
+{
+  "hooks": {
+    "pre-commit": "yarn lint && yarn test:coverage",
+    "pre-push": "yarn test:e2e"
+  }
+}

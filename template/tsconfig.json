@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2018",
+    "preserveConstEnums": true,
+    "lib": ["es2018"],
+    "module": "commonjs",
+    "outDir": "build",
+    "moduleResolution": "node",
+    "strict": true,
+    "alwaysStrict": true,
+    "strictPropertyInitialization": false,
+    "noFallthroughCasesInSwitch": false,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "declaration": true
+  },
+  "exclude": ["node_modules", "build"],
+  "include": ["src/**/*"]
+}

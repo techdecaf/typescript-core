@@ -1,0 +1,19 @@
+# FULL DOCUMENTATION CAN BE FOUND HERE: #https://docs.gitlab.com/ce/ci/yaml/
+image: node:lts-alpine
+
+variables:
+  YARN_CACHE_FOLDER: '/cache/yarn'
+
+stages: [test]
+
+before_script:
+  - apk add curl git
+  - sh -c "$(curl -fsSL https://raw.github.com/techdecaf/cgen/master/install.sh)"
+  - sh -c "$(curl -fsSL https://raw.github.com/techdecaf/tasks/master/install.sh)"
+  - git config --global user.email "ci@techdecaf.io"
+  - git config --global user.name "ci"
+
+test:
+  stage: test
+  script: [tasks run symlink test]
+  only: [branches, tags]

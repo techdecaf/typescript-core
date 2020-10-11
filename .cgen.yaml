@@ -1,0 +1,7 @@
+template: cgen-template
+answers:
+  CreateSamples: ""
+  Name: typescript-core
+  Template: cgen-template
+  TemplateVersion: 0.0.1
+  Timestamp: "2020-09-11T21:43:57Z"
