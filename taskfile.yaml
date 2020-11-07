@@ -26,6 +26,7 @@ tasks:
       Name: '{{uuidv4}}'
       AUTHOR: your.email@domain.com
       DESCRIPTION: end-to-end testing
+      GIT_BASE_URL: https://github.com/techdecaf
     commands: ['cgen -p temp -t {{.CI_PROJECT_NAME}}']
 
   clean:

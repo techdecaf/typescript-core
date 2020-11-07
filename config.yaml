@@ -13,7 +13,8 @@ questions:
     type: string
     prompt: how would you describe this project
   - name: GIT_BASE_URL
-    type: constant
+    type: string
+    prompt: what is the repository base url (excluding the project name)
     default: https://github.com/techdecaf
 
 # executed by cgen after resolving variables, but before generating files
