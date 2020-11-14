@@ -4,9 +4,10 @@ options:
 
 variables:
   CI_PROJECT_NAME: '{{ReadFile `.cgen.yaml` | YQ `answers.Name`}}'
-  CI_COMMIT_TAG: '{{TRY `git describe --tags --always --dirty --abbrev=0`}}'
-  CI_COMMIT_REF_NAME: '{{TRY `git rev-parse --abbrev-ref HEAD`}}'
-  CI_COMMIT_SHA: '{{TRY `git rev-parse HEAD`}}'
+  CI_COMMIT_TAG: '{{EXEC `git describe --tags --always --dirty --abbrev=0`}}'
+  CI_COMMIT_REF_NAME: '{{EXEC `git rev-parse --abbrev-ref HEAD`}}'
+  CI_COMMIT_SHA: '{{EXEC `git rev-parse HEAD`}}'
+  BUILD_DIR: 'build'
 
 tasks:
   default:
@@ -24,21 +25,29 @@ tasks:
     pre: [clean]
     variables:
       Name: '{{uuidv4}}'
+      DESCRIPTION: end-to-end tests
       AUTHOR: your.email@domain.com
-      DESCRIPTION: end-to-end testing
       GIT_BASE_URL: https://github.com/techdecaf
-    commands: ['cgen -p temp -t {{.CI_PROJECT_NAME}}']
+    commands: ['cgen -p {{.BUILD_DIR}} -t {{.CI_PROJECT_NAME}}']
+
+  upgrade-dependencies:
+    description: upgrade dependencies from generated template directory
+    commands:
+      - jq -n 'input | .dependencies = input.dependencies' template/package.json.tmpl {{.BUILD_DIR}}/package.json > package.json.tmpl
+      - mv package.json.tmpl template/package.json.tmpl
+      - jq -n 'input | .devDependencies = input.devDependencies' template/package.json.tmpl {{.BUILD_DIR}}/package.json > package.json.tmpl
+      - mv package.json.tmpl template/package.json.tmpl
+      - 'cp {{.BUILD_DIR}}/yarn.lock template/yarn.lock.tmpl'
 
   clean:
     description: remove files created as part of the build step.
-    commands: ['rm -rf ./temp']
+    commands: ['rm -rf {{.BUILD_DIR}}']
 
   test:
-    description: run tests
-    dir: temp
+    description: generate a new template and run a full test suite
+    dir: build
     pre: [build]
-    commands:
-      - tasks run dependencies coverage audit
+    commands: [tasks run login dependencies coverage audit e2e]
 
   release:
     description: bump version and release
