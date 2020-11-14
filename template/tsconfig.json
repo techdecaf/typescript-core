@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "ES2018",
+    "target": "ES2020",
     "preserveConstEnums": true,
-    "lib": ["es2018"],
+    "lib": ["ES2020"],
     "module": "commonjs",
     "outDir": "build",
     "moduleResolution": "node",
