@@ -6,9 +6,7 @@
   "coverageReporters": ["text"],
   "collectCoverageFrom": [
     "**/*.{ts,tsx}",
-    "!**/_*.{ts,tsx}",
-    "!**/*.test.{ts,tsx}",
-    "!src/{app.module,lambda}.ts",
+    "!**/*.{test,spec}.{ts,tsx}",
     "!src/**/*.{migration,entity}.ts"
   ],
   "transform": {
